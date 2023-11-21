@@ -1,0 +1,228 @@
+openapi: 3.0.1
+info:
+  title: Получение информации о сервере.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  /servers:
+    get:
+      summary: Метод получения списка серверов.
+      tags: 
+        - Servers
+      operationId: getAllServers
+      responses:
+        "200":
+          description: Успешный ответ со спиcком серверов.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Servers"
+        "400":
+          description: Неправильный запрос.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка сервера.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления нового сервера в список.
+      tags: 
+        - Servers
+      operationId: createServer
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Server" 
+      responses:
+        "200":
+          description: Усшный ответ добавления нового сервера.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+        "400":
+          description: Неправильный запрос.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка сервера.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /servers/{idServer}:
+    get:
+      summary: Метод получения сервера по id.
+      tags:
+        - Servers
+      operationId: getServerId
+      parameters:
+        - name: idServer
+          in: path
+          required: true
+          description: id Server
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Усшный ответ получения сервера по id.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+        "400":
+          description: Неправильный запрос.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка сервера.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Метод для обновления сервера по id.
+      tags:
+        - Servers
+      operationId: updateServerId
+      parameters:
+        - name: idServer
+          in: path
+          required: true
+          description: id Server
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Усшный ответ обновления сервера по id.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Server"
+        "400":
+          description: Неправильный запрос.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка сервера.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление сервера по id.
+      tags:
+        - Servers
+      operationId: deleteServerById
+      parameters:
+        - name: idServer
+          in: path
+          required: true
+          description: id Server
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешное удаление клиента по id
+          content:
+            adplication/json: {}
+        "400":
+          description: Неправильный запрос.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Внутренняя ошибка сервера.
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Server:
+      type: object
+      required:
+        - idServer
+        - CPU
+        - RAM
+        - SSD
+      properties:
+        idServer:
+          type: integer 
+          example: 1
+          description: Id сервера.
+        CPU:
+          type: integer
+          example: 8
+          description: Количество ядер в процессоре.
+        RAM:
+          type: integer
+          example: 16
+          description: Оперативная память в Гб.
+        SSD:
+          type: integer
+          example: 512
+          description: Память в Гб, от 256 до считаем что Тб.
+    Servers:
+      type: array
+      items:
+        $ref: "#/components/schemas/Server"
+    Error:
+      type: object
+      required:
+        - codeError
+        - messageError
+      properties:
+        codeError:
+          type: string
+          example: 123f456
+          description: Код ошибки
+        messageError:
+          type: string
+          example: error
+          description: Сообщение ошибки
+    Cloud:
+      type: object
+      required:
+        - OS
+        - RAM
+        - CPU
+        - SSD
+        - idServer
+      properties:
+        OS:
+          type: string
+          enum:
+            - Windows
+            - Linux
+            - MacOS
+        RAM:
+          type: integer
+          example: 256
+          description: Память в Гб, от 256 до считаем что Тб.
+        CPU:
+          type: integer
+          example: 8
+          description: Количество ядер в процессоре.
+        SSD:
+          type: integer
+          example: 1024
+          description: Количетсво памяти в Гб.
+        idServer:
+          type: integer
+          example: 1
